@@ -15,13 +15,8 @@ async function getTasks() {
   }
   const data = await res.json();
 
-  // ** Workaround as my mock api has date returned as "dd-Mon-yyyy"
-  const tasks = z.array(taskSchema).parse(
-    data.map((task: any) => {
-      task.due_date = new Date(Date.parse(task.due_date));
-      return task;
-    })
-  );
+  // ** Workaround as my mock api has date returned as "dd-Mon-yyyy" - Zod now handles this coercion and validation
+  const tasks = z.array(taskSchema).parse(data);
   return tasks;
 }
 
